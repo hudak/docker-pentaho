@@ -17,4 +17,4 @@ RUN chmod u+x /init.sh
 RUN apt-get install -y xterm
 
 # Start Service
-CMD ['/init.sh']
+CMD ["/init.sh"]
