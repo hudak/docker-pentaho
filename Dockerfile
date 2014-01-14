@@ -6,7 +6,7 @@ MAINTAINER Nick Hudak nhudak@pentaho.com
 RUN apt-get update && apt-get -y install openssh-server && mkdir -p /var/run/sshd
 
 # Install visualization libraries and utilities
-RUN apt-get install -y xterm firefox
+RUN apt-get install -y xterm firefox libwebkitgtk-1.0-0
 
 # Add pentaho user
 RUN useradd --create-home -s /bin/bash pentaho
