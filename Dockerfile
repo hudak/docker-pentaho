@@ -11,7 +11,8 @@ RUN apt-get install -y xterm firefox libwebkitgtk-1.0-0
 # Add pentaho user
 RUN useradd --create-home -s /bin/bash pentaho
 # Grand sudo privlidges
-RUN apt-get install sudo && echo "pentaho ANY = NOPASSWD: ANY" 
+RUN apt-get install sudo -y && \
+	echo "pentaho ALL = (root) NOPASSWD: /bin/bash" >>/etc/sudoers
 
 # Install startup script
 ADD init.sh /
