@@ -13,6 +13,10 @@ RUN useradd --create-home -s /bin/bash pentaho
 # Grand sudo privlidges
 RUN apt-get install sudo -y && \
 	echo "pentaho ALL = (root) NOPASSWD: $(which bash),$(which apt-get)" >>/etc/sudoers
+# Setup ssh auth
+RUN mkdir ~pentaho/.ssh && touch ~pentaho/.ssh/authorized_keys && \
+	chown -R pentaho:pentaho ~pentaho/.ssh && \
+	chmod -R u=rwX,go= ~pentaho/.ssh
 
 # Install startup script
 ADD init.sh /
