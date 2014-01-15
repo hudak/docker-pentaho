@@ -2,6 +2,9 @@ FROM hudak/oracle-java7
 
 MAINTAINER Nick Hudak nhudak@pentaho.com
 
+# Set Locale
+RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
+
 # Install useful command line utilities
 RUN apt-get -y install man vim curl
 
