@@ -2,6 +2,9 @@ FROM hudak/oracle-java7
 
 MAINTAINER Nick Hudak nhudak@pentaho.com
 
+# Install useful command line utilities
+RUN apt-get -y install man vim curl
+
 # Install SSH Server
 RUN apt-get update && apt-get -y install openssh-server && mkdir -p /var/run/sshd
 
