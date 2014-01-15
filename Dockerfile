@@ -30,4 +30,3 @@ RUN chmod u+x /init.sh
 
 # Start Service
 CMD ["/init.sh"]
-EXPOSE 22
