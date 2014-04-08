@@ -1,25 +1,27 @@
-FROM hudak/oracle-java7
-
+#Dockerfile
+FROM dockerfile/java
 MAINTAINER Nick Hudak nhudak@pentaho.com
 
+RUN apt-get update
+
 # Install useful command line utilities
-RUN apt-get -y install man vim curl
-
+RUN apt-get -y install man vim sudo
 # Install SSH Server
-RUN apt-get update && apt-get -y install openssh-server && mkdir -p /var/run/sshd
-
-# Install visualization libraries and utilities
-RUN apt-get install -y xterm firefox libwebkitgtk-1.0-0
+RUN apt-get -y install openssh-server && mkdir -p /var/run/sshd
+# Install networking tools
+RUN apt-get -y install net-tools dnsutils
+# Install postgres
+RUN apt-get -y install postgresql
+# Install libraries and utilities
+#RUN apt-get install -y libwebkitgtk-1.0-0
 
 # Add pentaho user
-RUN useradd --create-home -s /bin/bash pentaho
-# Grand sudo privlidges
-RUN apt-get install sudo -y && \
-	echo "pentaho ALL = (root) NOPASSWD: $(which bash),$(which apt-get)" >>/etc/sudoers
-# Setup ssh auth
-RUN mkdir ~pentaho/.ssh && touch ~pentaho/.ssh/authorized_keys && \
-	chown -R pentaho:pentaho ~pentaho/.ssh && \
-	chmod -R u=rwX,go= ~pentaho/.ssh
+RUN useradd --create-home -s /bin/bash -G sudo pentaho
+RUN sed -i.orig 's/%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
+RUN cp -rvT ~root ~pentaho && chown -R pentaho:pentaho ~pentaho
+
+# Setup Environment
+RUN echo export JAVA_HOME=/usr/lib/jvm/java-7-oracle >>/etc/bash.bashrc
 
 # Install startup script
 ADD init.sh /
@@ -27,3 +29,4 @@ RUN chmod u+x /init.sh
 
 # Start Service
 CMD ["/init.sh"]
+EXPOSE 22 5432
