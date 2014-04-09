@@ -21,15 +21,16 @@ RUN apt-get -y install postgresql
 # Add pentaho user
 RUN useradd --create-home -s /bin/bash -G sudo pentaho
 RUN sed -i.orig 's/%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
-RUN cp -rvT ~root ~pentaho && chown -R pentaho:pentaho ~pentaho
+RUN cp -rvT /root /home/pentaho
+RUN chown -Rv pentaho:pentaho /home/pentaho
 
 # Setup Environment
 RUN echo export JAVA_HOME=/usr/lib/jvm/java-7-oracle >>/etc/bash.bashrc
 
 # Install startup script
-ADD init.sh /
-RUN chmod u+x /init.sh
+ADD init.sh /root/
+RUN chmod u+x /root/init.sh
 
 # Start Service
-CMD ["/init.sh"]
+CMD ["/root/init.sh"]
 EXPOSE 22 5432
