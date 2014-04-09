@@ -14,7 +14,7 @@ RUN apt-get -y install openssh-server && mkdir -p /var/run/sshd
 # Install networking tools
 RUN apt-get -y install net-tools dnsutils
 # Install postgres
-RUN apt-get -y install postgresql
+RUN apt-get -y install postgresql-9.3
 # Install libraries and utilities
 #RUN apt-get install -y libwebkitgtk-1.0-0
 
@@ -26,6 +26,12 @@ RUN chown -Rv pentaho:pentaho /home/pentaho
 
 # Setup Environment
 RUN echo export JAVA_HOME=/usr/lib/jvm/java-7-oracle >>/etc/bash.bashrc
+RUN /etc/init.d/postgresql start && \
+	sudo -u postgres psql --command "ALTER USER postgres WITH PASSWORD 'password';"
+RUN {	cd /etc/postgresql/9.3/main; \
+	echo 'host   all   all   0.0.0.0/0   md5' >>pg_hba.conf; \
+	echo "listen_addresses='*'" >>postgresql.conf; \
+}
 
 # Install startup script
 ADD init.sh /root/
