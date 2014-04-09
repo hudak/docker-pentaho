@@ -3,6 +3,7 @@ echo "Check for installed ssh keys"
 authKeys=~pentaho/.ssh/authorized_keys
 if [[ ! -f $authKeys ]]; then
 	mkdir -p $(dirname $authKeys) && >$authKeys
+	chown -R pentaho:pentaho $(dirname $authKeys)
 	echo "pentaho user does not have ssh keys installed"
 	echo Paste in rsa public key
 	while read line; do
