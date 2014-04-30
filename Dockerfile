@@ -17,7 +17,7 @@ RUN apt-get -y install net-tools dnsutils
 RUN apt-get -y install postgresql-9.3
 # Install libraries and utilities
 RUN apt-get install -y bash-completion
-#RUN apt-get install -y libwebkitgtk-1.0-0
+RUN apt-get install -y libwebkitgtk-1.0-0 libxtst6
 
 # Add pentaho user
 RUN useradd --create-home -s /bin/bash -G sudo pentaho
