@@ -30,10 +30,8 @@ RUN echo export JAVA_HOME=/usr/lib/jvm/java-7-oracle >>/etc/bash.bashrc
 ADD psqlfix.sql /root/
 RUN /etc/init.d/postgresql start && \
 	sudo -u postgres psql </root/psqlfix.sql && rm /root/psqlfix.sql
-RUN {	cd /etc/postgresql/9.3/main; \
-	echo 'host   all   all   0.0.0.0/0   md5' >>pg_hba.conf; \
-	echo "listen_addresses='*'" >>postgresql.conf; \
-}
+ADD psqlfix.sh /root/
+RUN sh /root/psqlfix.sh && rm /root/psqlfix.sh
 
 # Install startup script
 ADD init.sh /root/
